@@ -19,7 +19,9 @@ function Message({ content, variant, color }) {
 
 function MessageStack({ contentArr, color }) {
     if (contentArr.length === 1) {
-        return <Message content={content} color={color} variant={"single"} />;
+        return (
+            <Message content={contentArr[0]} color={color} variant={"single"} />
+        );
     }
     return (
         <>
