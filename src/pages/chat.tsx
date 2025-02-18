@@ -6,29 +6,61 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { MessageGroup } from "@/components/messages";
+import { RocketIcon } from "@radix-ui/react-icons";
+
+const msgGroups = [
+    {
+        sender: "Rama",
+        messages: [
+            "Testing\nTesting",
+            "Hey man, what's up",
+            "u been practicing the panflute lately?",
+        ],
+        timestamp: "1/20/2025 11:36 AM",
+    },
+    {
+        sender: "Not_Rama",
+        messages: ["nm bro", "ya, lil bit"],
+    },
+];
 
 export function Chat() {
     return (
-        <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex flex-row">
-                        <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                        Profile
-                    </CardTitle>
-                    <CardDescription>Online</CardDescription>
+        <div className="flex flex-col w-full">
+            <Card className="m-1">
+                <CardHeader className="flex flex-row">
+                    <Avatar className="size-12">
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col justify-center">
+                        <CardTitle className="text-lg leading-none">
+                            Profile
+                        </CardTitle>
+                        <CardDescription className="leading-none">
+                            Online
+                        </CardDescription>
+                    </div>
                 </CardHeader>
             </Card>
-
-            <Textarea
-                placeholder="Type your message here."
-                className="resize-none"
-            />
-            <Button>Send</Button>
+            <div className="h-full">
+                {msgGroups.map((group) => (
+                    <MessageGroup
+                        group={group}
+                        fromSelf={group.sender === "Rama"}
+                    />
+                ))}
+            </div>
+            <div className="border-t p-1">
+                <div className="flex flex-row items-center space-x-1 w-full">
+                    <Input placeholder="Type your message here." />
+                    <Button>
+                        <RocketIcon />
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 }
