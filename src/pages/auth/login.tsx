@@ -17,7 +17,7 @@ export default function LoginPage({
 }: React.ComponentProps<"div">) {
     const handleSubmit = async (formData) => {
         const user = {
-            username: formData.get("email"),
+            username: formData.get("username"),
             password: formData.get("password"),
         };
         console.log(user);
@@ -49,7 +49,7 @@ export default function LoginPage({
                     <CardHeader className="text-center">
                         <CardTitle className="text-xl">Welcome back</CardTitle>
                         <CardDescription>
-                            Enter your email and password below.
+                            Enter your username and password below.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -57,12 +57,14 @@ export default function LoginPage({
                             <div className="grid gap-6">
                                 <div className="grid gap-6">
                                     <div className="grid gap-3">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="username">
+                                            Username
+                                        </Label>
                                         <Input
-                                            id="email"
-                                            type="email"
-                                            name="email"
-                                            placeholder="m@example.com"
+                                            id="username"
+                                            type="text"
+                                            name="username"
+                                            placeholder="User123"
                                             required
                                         />
                                     </div>
