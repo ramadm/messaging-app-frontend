@@ -1,27 +1,52 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router";
+import { useAuth } from "./auth/authContext";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-export default function Dashboard({ isAuth }) {
-    // useEffect(() => {
-    //     // TODO: add useContext for user logged-in status
-    // }, [])
+export default function Dashboard() {
+    const { auth, setAuth } = useAuth();
+    const [loading, setLoading] = useState(true);
 
-    // persistence
-    // 1. Get logged-in status working until refresh using useContext
-    // 2. Implement log-out
-    // 3. When we load the page for the first time, we send a GET request w/ out header to the server
-    // 4. The server can either respond OK and send us the user details, or reject
-    // 5. On success we re-populate auth context
-    // 6. On failure we re-direct to log-in page (and delete cookie if it's present?)
+    useEffect(() => {
+        fetch("http://localhost:3000/session", {
+            method: "POST",
+            withCredentials: true,
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => setAuth(data))
+            .catch(() => setAuth(null))
+            .finally(() => setLoading(false));
+    }, []);
 
-    return isAuth ? (
-        <SidebarProvider>
-            <AppSidebar />
-            <Outlet />
-        </SidebarProvider>
-    ) : (
-        <Navigate to="/login" />
-    );
+    if (loading) {
+        return (
+            <div className="flex h-svh w-full items-center justify-center bg-slate-100">
+                <Card className="p-10">
+                    <CardHeader className="items-center">
+                        <Loader2 className="animate-spin" size={64} />
+                    </CardHeader>
+                    <CardContent>
+                        <h1 className="text-3xl">Loading...</h1>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    } else if (auth && auth.message === "Success!") {
+        return (
+            <SidebarProvider>
+                <AppSidebar />
+                <Outlet />
+            </SidebarProvider>
+        );
+    } else {
+        return <Navigate to="/login" />;
+    }
 }

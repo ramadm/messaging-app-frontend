@@ -10,7 +10,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/pages/auth/authContext";
 
 // Menu items.
 const items = [
@@ -42,6 +44,9 @@ const items = [
 ];
 
 export function AppSidebar() {
+    const { setAuth } = useAuth();
+    const navigate = useNavigate();
+
     return (
         <Sidebar>
             <SidebarContent>
@@ -59,6 +64,14 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
+                            <Button
+                                onClick={() => {
+                                    setAuth(null);
+                                    navigate("/login");
+                                }}
+                            >
+                                Logout
+                            </Button>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
