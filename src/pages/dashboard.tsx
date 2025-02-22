@@ -39,7 +39,7 @@ export default function Dashboard() {
                 </Card>
             </div>
         );
-    } else if (auth && auth.message === "Success!") {
+    } else if (auth) {
         return (
             <SidebarProvider>
                 <AppSidebar />

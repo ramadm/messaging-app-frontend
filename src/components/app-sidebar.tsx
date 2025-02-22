@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/pages/auth/authContext";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 // Menu items.
 const items = [
@@ -44,8 +45,26 @@ const items = [
 ];
 
 export function AppSidebar() {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
+    const handleLogout = () => {
+        fetch("http://localhost:3000/logout", {
+            method: "POST",
+            withCredentials: true,
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        }).then((res) => {
+            if (res.ok) {
+                setAuth(null);
+                navigate("/login");
+            } else {
+                console.log(res.status);
+            }
+        });
+    };
 
     return (
         <Sidebar>
@@ -54,6 +73,27 @@ export function AppSidebar() {
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton size={"lg"}>
+                                    <Avatar className="rounded-lg">
+                                        <AvatarImage
+                                            src="hhhttps://github.com/shadcn.png"
+                                            alt="@shadcn"
+                                        />
+                                        <AvatarFallback className="rounded-lg bg-slate-700 text-white">
+                                            CN
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="grid flex-1 text-left text-sm leading-tight">
+                                        <span className="truncate font-semibold">
+                                            {auth.username}
+                                        </span>
+                                        <span className="truncate text-xs">
+                                            {"User ID: " + auth.id}
+                                        </span>
+                                    </div>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
@@ -64,14 +104,7 @@ export function AppSidebar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
-                            <Button
-                                onClick={() => {
-                                    setAuth(null);
-                                    navigate("/login");
-                                }}
-                            >
-                                Logout
-                            </Button>
+                            <Button onClick={handleLogout}>Logout</Button>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
