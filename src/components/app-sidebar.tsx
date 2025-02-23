@@ -50,7 +50,6 @@ export function AppSidebar() {
     const handleLogout = () => {
         fetch("http://localhost:3000/logout", {
             method: "POST",
-            withCredentials: true,
             credentials: "include",
             headers: {
                 Accept: "application/json",
@@ -86,10 +85,10 @@ export function AppSidebar() {
                                     </Avatar>
                                     <div className="grid flex-1 text-left text-sm leading-tight">
                                         <span className="truncate font-semibold">
-                                            {auth.username}
+                                            {auth && auth.username}
                                         </span>
                                         <span className="truncate text-xs">
-                                            {"User ID: " + auth.id}
+                                            {auth && "User ID: " + auth.id}
                                         </span>
                                     </div>
                                 </SidebarMenuButton>

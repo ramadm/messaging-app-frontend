@@ -1,6 +1,12 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-function Message({ content, variant, color }) {
+interface MessageProps {
+    content: string;
+    variant: "single" | "top" | "middle" | "bottom";
+    color: "self" | "other";
+}
+
+function Message({ content, variant, color }: MessageProps) {
     const variants = {
         single: "rounded-2xl",
         top: "rounded-t-2xl rounded-br-2xl rounded-bl-xs",
@@ -17,7 +23,12 @@ function Message({ content, variant, color }) {
     return <div className={messageStyle}>{content}</div>;
 }
 
-function MessageStack({ contentArr, color }) {
+interface MessageStackProps {
+    contentArr: Array<string>;
+    color: "self" | "other";
+}
+
+function MessageStack({ contentArr, color }: MessageStackProps) {
     if (contentArr.length === 1) {
         return (
             <Message content={contentArr[0]} color={color} variant={"single"} />
@@ -48,7 +59,18 @@ function MessageStack({ contentArr, color }) {
     );
 }
 
-export function MessageGroup({ group, fromSelf }) {
+interface MessageGroup {
+    sender: string;
+    messages: Array<string>;
+    timestamp: string;
+}
+
+interface MessageGroupProps {
+    group: MessageGroup;
+    fromSelf: boolean;
+}
+
+export function MessageGroup({ group, fromSelf }: MessageGroupProps) {
     return (
         <div className="m-2 flex flex-row">
             <Avatar className="my-1">

@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Navigate, Outlet } from "react-router";
 import { useAuth } from "./auth/authContext";
 import { useEffect, useState } from "react";
@@ -11,9 +11,8 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/session", {
+        fetch(import.meta.env.VITE_API_BASE_URL + "/session", {
             method: "POST",
-            withCredentials: true,
             credentials: "include",
             headers: {
                 Accept: "application/json",
@@ -24,7 +23,7 @@ export default function Dashboard() {
             .then((data) => setAuth(data))
             .catch(() => setAuth(null))
             .finally(() => setLoading(false));
-    }, []);
+    }, [setAuth]);
 
     if (loading) {
         return (

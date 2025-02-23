@@ -38,17 +38,18 @@ export default function Login() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        const res = await fetch("http://localhost:3000/login/password", {
-            method: "POST",
-            withCredentials: true,
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-        });
+        const res = await fetch(
+            import.meta.env.VITE_API_BASE_URL + "/login/password",
+            {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            }
+        );
 
         if (!res.ok) {
             //console.log(`${res.status}: ${await res.text()}`);
@@ -89,7 +90,7 @@ export default function Login() {
                                         <FormLabel>Username</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="ramoose"
+                                                placeholder="rama"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -105,7 +106,7 @@ export default function Login() {
                                         <div className="flex items-center">
                                             <FormLabel>Password</FormLabel>
                                             <Link
-                                                to="#"
+                                                to="/forgot-password"
                                                 className="ml-auto text-sm underline-offset-4 hover:underline"
                                             >
                                                 Forgot your password?
