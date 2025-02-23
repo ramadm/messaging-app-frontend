@@ -48,7 +48,7 @@ export function AppSidebar() {
     const { auth, setAuth } = useAuth();
     const navigate = useNavigate();
     const handleLogout = () => {
-        fetch("http://localhost:3000/logout", {
+        fetch(import.meta.env.VITE_API_BASE_URL + "/logout", {
             method: "POST",
             credentials: "include",
             headers: {
